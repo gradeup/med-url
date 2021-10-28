@@ -1,1 +1,103 @@
-"use strict";function _objectSpread(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{},o=Object.keys(r);"function"==typeof Object.getOwnPropertySymbols&&(o=o.concat(Object.getOwnPropertySymbols(r).filter(function(e){return Object.getOwnPropertyDescriptor(r,e).enumerable}))),o.forEach(function(t){_defineProperty(e,t,r[t])})}return e}function _defineProperty(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}function _typeof(e){return(_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function set(e,t){if(!e&&!t)return"";if(e?"object"===_typeof(e)&&(t=e,e=""):e="",t||(t={}),!e&&t&&t.url&&(e=t.url),e=e.replace(/(.*)\/$/,"$1"),t){var r=[],o=get(e);if(t.query=_objectSpread({},o||{},t.query),t.query)for(var n in e=e.replace(/(.*)\/$/,"$1"),t.query)void 0!==t.query[n]&&null!==t.query[n]&&r.push("".concat(n,"=").concat(encodeURIComponent(String(t.query[n]).trim())));return e=e.replace(/(.*)\?.*$/,"$1"),"".concat(e,"?").concat(r.join("&"))}}function get(e,t){try{var r=e.match(/.*\?(.*)$/);if(r&&r[1]){var o={},n=r[1].split("&");if(n&&n.length>0)for(var c=0;c<n.length;c++){var u=n[c].split("=");o[u[0]]=decodeURIComponent(u[1]||!0)}return t?o[t]:o}}catch(e){console.log(e)}}Object.defineProperty(exports,"__esModule",{value:!0}),exports.set=set,exports.get=get,exports.default=void 0;var _default={set:set,get:get};exports.default=_default;
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+exports.get = get;
+exports.set = set;
+
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
+var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function set(url, options) {
+  /* Constructing Parameters passed */
+  if (!url && !options) {
+    return '';
+  }
+
+  if (url) {
+    if ((0, _typeof2["default"])(url) === 'object') {
+      options = url;
+      url = '';
+    }
+  } else {
+    url = '';
+  }
+
+  if (!options) {
+    options = {};
+  }
+
+  if (!url && options && options.url) {
+    url = options.url;
+  }
+  /* Removing last slash if present */
+
+
+  url = url.replace(/(.*)\/$/, "$1");
+  /* Supplying options */
+
+  if (options) {
+    var qs = [];
+    var temp = get(url);
+    options.query = _objectSpread(_objectSpread({}, temp || {}), options.query);
+
+    if (options.query) {
+      url = url.replace(/(.*)\/$/, "$1");
+
+      for (var key in options.query) {
+        if (options.query[key] !== undefined && options.query[key] !== null) {
+          qs.push("".concat(key, "=").concat(encodeURIComponent(String(options.query[key]).trim())));
+        }
+      }
+    }
+
+    url = url.replace(/(.*)\?.*$/, "$1");
+    return "".concat(url).concat(qs.length > 0 ? "?".concat(qs.join('&')) : '');
+    ;
+  }
+}
+
+function get(url, key) {
+  try {
+    var extra = url.match(/.*\?(.*)$/);
+
+    if (extra) {
+      if (extra[1]) {
+        var obj = {};
+        var params = extra[1].split('&');
+
+        if (params && params.length > 0) {
+          for (var i = 0; i < params.length; i++) {
+            var temp = params[i].split('=');
+            obj[temp[0]] = decodeURIComponent(temp[1] || true);
+          }
+        }
+
+        if (key) {
+          return obj[key];
+        }
+
+        return obj;
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  return undefined;
+}
+
+var _default = {
+  set: set,
+  get: get
+};
+exports["default"] = _default;
